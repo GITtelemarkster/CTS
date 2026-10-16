@@ -1,0 +1,211 @@
+{
+  "design": {
+    "chip_width": 2000,
+    "chip_height": 2000,
+    "grid_size": 10
+  },
+  "clock_source": {
+    "id": "CLK_SRC",
+    "x": 1000,
+    "y": 2000,
+    "pin_id": "CLK_PIN",
+    "input_capacitance": 0.0,
+    "fixed": true
+  },
+  "sinks": [
+    {
+      "id": "S1",
+      "x": 1359,
+      "y": 278,
+      "pin_id": "S1_PIN",
+      "capacitance": 2.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S2",
+      "x": 613,
+      "y": 551,
+      "pin_id": "S2_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S3",
+      "x": 1558,
+      "y": 259,
+      "pin_id": "S3_PIN",
+      "capacitance": 4.7,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S4",
+      "x": 1877,
+      "y": 1166,
+      "pin_id": "S4_PIN",
+      "capacitance": 2.3,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S5",
+      "x": 914,
+      "y": 115,
+      "pin_id": "S5_PIN",
+      "capacitance": 2.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S6",
+      "x": 497,
+      "y": 526,
+      "pin_id": "S6_PIN",
+      "capacitance": 4.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S7",
+      "x": 104,
+      "y": 1199,
+      "pin_id": "S7_PIN",
+      "capacitance": 2.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S8",
+      "x": 1380,
+      "y": 1486,
+      "pin_id": "S8_PIN",
+      "capacitance": 4.2,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S9",
+      "x": 501,
+      "y": 969,
+      "pin_id": "S9_PIN",
+      "capacitance": 4.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S10",
+      "x": 1707,
+      "y": 1830,
+      "pin_id": "S10_PIN",
+      "capacitance": 2.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S11",
+      "x": 1700,
+      "y": 376,
+      "pin_id": "S11_PIN",
+      "capacitance": 4.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S12",
+      "x": 746,
+      "y": 619,
+      "pin_id": "S12_PIN",
+      "capacitance": 2.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S13",
+      "x": 1613,
+      "y": 739,
+      "pin_id": "S13_PIN",
+      "capacitance": 2.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S14",
+      "x": 828,
+      "y": 248,
+      "pin_id": "S14_PIN",
+      "capacitance": 3.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S15",
+      "x": 754,
+      "y": 1286,
+      "pin_id": "S15_PIN",
+      "capacitance": 3.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    }
+  ],
+  "buffers": [
+    {
+      "id": "BUF_STD",
+      "type": "standard",
+      "input_capacitance": 0.5,
+      "output_resistance": 50.0,
+      "intrinsic_delay": 0.15,
+      "drive_strength": 1.0,
+      "available": true
+    },
+    {
+      "id": "BUF_MID",
+      "type": "mid",
+      "input_capacitance": 1.0,
+      "output_resistance": 25.0,
+      "intrinsic_delay": 0.2,
+      "drive_strength": 2.0,
+      "available": true
+    },
+    {
+      "id": "BUF_LARGE",
+      "type": "large",
+      "input_capacitance": 2.0,
+      "output_resistance": 10.0,
+      "intrinsic_delay": 0.3,
+      "drive_strength": 4.0,
+      "available": true
+    }
+  ],
+  "wire_model": {
+    "unit_capacitance": 0.2,
+    "unit_resistance": 0.05,
+    "unit_length": 1.0,
+    "model": "elmore"
+  },
+  "tree_params": {
+    "algorithm": "median_partition",
+    "max_fanout": 4,
+    "min_sinks_for_partition": 2,
+    "max_depth": 10,
+    "partition_criterion": "balanced_capacitance",
+    "partition_axis": "auto",
+    "median_type": "geometric_median",
+    "buffer_insertion": true,
+    "buffer_selection": "size_by_load",
+    "min_buffer_input_cap": 0.5,
+    "snaking_allowed": true,
+    "wire_snaking_limit": 0.2,
+    "obstacle_aware": false
+  },
+  "optimization": {
+    "objective": "min_skew",
+    "secondary_objective": "min_power",
+    "max_iterations": 20,
+    "convergence_tol": 0.0001,
+    "skew_target": 0.05,
+    "power_weight": 0.1,
+    "delay_weight": 0.9
+  }
+}
