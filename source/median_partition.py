@@ -18,7 +18,6 @@ class MedianPartitionCTS:
         self.buffers = buffers
         self.params = tree_params
         
-        # Извлечение параметров алгоритма с дефолтными значениями
         self.max_fanout = int(self.params.get("max_fanout", 4))
         self.min_sinks = int(self.params.get("min_sinks_for_partition", 2))
         self.criterion = self.params.get("partition_criterion", "balanced_capacitance")
@@ -27,42 +26,29 @@ class MedianPartitionCTS:
         self.buffer_insertion = self.params.get("buffer_insertion", True)
         self.buffer_selection = self.params.get("buffer_selection", "size_by_load")
         
-        # Выбираем буфер по умолчанию (наименьший доступный)
         self.default_buffer = min(buffers.values(), key=lambda b: b.drive_strength) if buffers else None
-        
         self.node_counter = 0
 
     def _next_node_id(self, prefix: str) -> str:
-        """Генерирует уникальный ID для новых узлов дерева"""
         self.node_counter += 1
         return f"{prefix}_{self.node_counter}"
 
     def build_tree(self) -> ClockNode:
-        """
-        Запускает CTS и возвращает корень дерева (ClockNode).
-        """
-        # Создаем корень дерева на позиции источника синхронизации
         root = ClockNode(
             id=self.clock_source.id,
             x=self.clock_source.x,
             y=self.clock_source.y,
             node_type="source"
         )
-        
-        # Если sinks нет, возвращаем пустой корень
         if not self.sinks:
             return root
             
-        # Запуск рекурсивного построения поддерева
+        # Запускаем разбиение от корня
         self._partition_recursive(root, self.sinks, depth=1)
         return root
 
     def _partition_recursive(self, parent_node: ClockNode, current_sinks: List[Sink], depth: int):
-        """
-        Рекурсивный шаг разбиения множества sink'ов.
-        """
-        # Базовый случай: если элементов меньше или равно макс. ветвлению (fanout),
-        # подключаем их напрямую к текущему родителю
+        # Базовый случай: если элементов укладывается в max_fanout, цепляем их напрямую
         if len(current_sinks) <= self.max_fanout:
             for sk in current_sinks:
                 sink_node = ClockNode(
@@ -72,114 +58,96 @@ class MedianPartitionCTS:
                 parent_node.add_child(sink_node)
             return
 
-        # 1. Определяем ось разбиения (X или Y)
+        # 1. Выбираем ось и сортируем
         axis = self._choose_axis(current_sinks, depth)
-        
-        # 2. Сортируем элементы вдоль выбранной оси
         if axis == 'x':
             current_sinks.sort(key=lambda s: s.x)
         else:
             current_sinks.sort(key=lambda s: s.y)
 
-        # 3. Делим sink'и на группы (k-way разбиение в зависимости от max_fanout, обычно бинарное k=2)
-        # Для классического медианного разбиения делим пополам (на 2 подгруппы)
-        mid_idx = self._find_median_index(current_sinks)
-        groups = [current_sinks[:mid_idx], current_sinks[mid_idx:]]
-        
-        # 4. Вычисляем физические координаты точки ветвления (медианы) для текущего уровня
-        branch_x, branch_y = self._calculate_median_position(current_sinks)
-        
-        # Создаем промежуточный узел (Branch или Buffer)
-        node_type = "buffer" if self.buffer_insertion else "branch"
-        branch_node = ClockNode(
-            id=self._next_node_id("BUF" if node_type == "buffer" else "BR"),
-            x=branch_x, y=branch_y,
-            node_type=node_type
-        )
-        
-        # Назначаем тип буфера, если вставка включена
-        if node_type == "buffer" and self.default_buffer:
-            branch_node.buffer_ref = self._select_buffer_for_group(current_sinks)
+        # 2. Делим на K подгрупп (где K = max_fanout), чтобы не перегружать родительский узел
+        # Для классического бинарного деления можно использовать K=2, но K=max_fanout эффективнее по глубине
+        k = min(self.max_fanout, len(current_sinks))
+        groups = self._split_into_k_groups(current_sinks, k)
 
-        # Соединяем родителя с этой новой точкой ветвления
-        parent_node.add_child(branch_node)
-
-        # 5. Рекурсивно спускаемся в каждую подгруппу
+        # 3. Для каждой подгруппы создаем свой дочерний буфер/точку ветвления
         for group in groups:
-            if group:
-                self._partition_recursive(branch_node, group, depth + 1)
+            if not group:
+                continue
+                
+            branch_x, branch_y = self._calculate_median_position(group)
+            node_type = "buffer" if self.buffer_insertion else "branch"
+            
+            child_node = ClockNode(
+                id=self._next_node_id("BUF" if node_type == "buffer" else "BR"),
+                x=branch_x, y=branch_y,
+                node_type=node_type
+            )
+            
+            if node_type == "buffer" and self.default_buffer:
+                child_node.buffer_ref = self._select_buffer_for_group(group)
+
+            # Подключаем к родителю (у него будет не более max_fanout детей)
+            parent_node.add_child(child_node)
+
+            # Рекурсивно уходим вниз
+            self._partition_recursive(child_node, group, depth + 1)
 
     def _choose_axis(self, sinks: List[Sink], depth: int) -> str:
-        """Определяет ось разреза на основе конфигурации"""
-        if self.axis_mode == "x":
-            return "x"
-        if self.axis_mode == "y":
-            return "y"
-        if self.axis_mode == "alternate":
-            return "x" if depth % 2 != 0 else "y"
+        if self.axis_mode == "x": return "x"
+        if self.axis_mode == "y": return "y"
+        if self.axis_mode == "alternate": return "x" if depth % 2 != 0 else "y"
             
-        # Режим "auto": режем по оси с наибольшим разбросом (длиной охватывающего прямоугольника)
         xs = [s.x for s in sinks]
         ys = [s.y for s in sinks]
-        dx = max(xs) - min(xs)
-        dy = max(ys) - min(ys)
-        return "x" if dx >= dy else "y"
+        return "x" if (max(xs) - min(xs)) >= (max(ys) - min(ys)) else "y"
 
-    def _find_median_index(self, sorted_sinks: List[Sink]) -> int:
-        """
-        Находит индекс для разделения группы согласно критерию из ТЗ.
-        """
+    def _split_into_k_groups(self, sorted_sinks: List[Sink], k: int) -> List[List[Sink]]:
+        """Разбивает массив на K сбалансированных групп по емкости или количеству"""
         if self.criterion == "balanced_count":
-            # Простая геометрическая медиана: делим поровну по количеству
-            return len(sorted_sinks) // 2
-            
-        # По умолчанию: "balanced_capacitance" — балансировка по суммарной емкости
+            n = len(sorted_sinks)
+            return [sorted_sinks[i * n // k: (i + 1) * n // k] for i in range(k)]
+
+        # balanced_capacitance разбиение на K частей
         total_cap = sum(s.capacitance for s in sorted_sinks)
+        target_step = total_cap / k
+        
+        groups = [[] for _ in range(k)]
+        current_group = 0
         accumulated_cap = 0.0
-        for i, s in enumerate(sorted_sinks):
+        
+        for s in sorted_sinks:
+            groups[current_group].append(s)
             accumulated_cap += s.capacitance
-            if accumulated_cap >= total_cap / 2.0:
-                # Гарантируем, что индекс не выйдет за границы и не создаст пустую группу
-                return max(1, i)
-        return len(sorted_sinks) // 2
+            # Переходим к следующей группе, если заполнили текущий лимит (но держим в рамках k-1)
+            if accumulated_cap >= target_step * (current_group + 1) and current_group < k - 1:
+                current_group += 1
+                
+        return groups
 
     def _calculate_median_position(self, sinks: List[Sink]) -> Tuple[float, float]:
-        """
-        Вычисляет координаты виртуального центра (точки ветвления).
-        """
         if self.median_type == "centroid":
-            # Центр масс, взвешенный по емкости
             total_cap = sum(s.capacitance for s in sinks)
             if total_cap == 0:
-                return sinks[0].x, sinks[0].y
+                return sinks[0].x, sinks[0].y  # Исправлен баг с sinks.x
             cx = sum(s.x * s.capacitance for s in sinks) / total_cap
             cy = sum(s.y * s.capacitance for s in sinks) / total_cap
             return cx, cy
 
-        # По умолчанию/Манхэттенская медиана: берем среднее значение координат средних элементов
         xs = sorted([s.x for s in sinks])
         ys = sorted([s.y for s in sinks])
-        mx = xs[len(xs) // 2]
-        my = ys[len(ys) // 2]
-        return mx, my
+        return xs[len(xs) // 2], ys[len(ys) // 2]
 
     def _select_buffer_for_group(self, sinks: List[Sink]) -> BufferType:
-        """
-        Стратегия выбора буфера по нагрузке (size_by_load).
-        Чем больше суммарная емкость группы, тем мощнее берется буфер.
-        """
         if self.buffer_selection == "uniform" or not self.buffers:
             return self.default_buffer
             
         total_cap = sum(s.capacitance for s in sinks)
-        
-        # Эвристика: выбираем буфер, чья нагрузочная способность соответствует емкости
-        # Сортируем буферы по возрастанию силы драйвера
         sorted_bufs = sorted(self.buffers.values(), key=lambda b: b.drive_strength)
         
         if total_cap < 15.0:
-            return sorted_bufs[0]  # STD
+            return sorted_bufs[0]
         elif total_cap < 30.0 and len(sorted_bufs) > 1:
-            return sorted_bufs[1]  # MID
+            return sorted_bufs[1]
         else:
-            return sorted_bufs[-1] # LARGE
+            return sorted_bufs[-1]

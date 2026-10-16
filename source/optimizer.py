@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any,Tuple
 from models import ClockNode, WireModel
 from delay_calc import DelayCalculator
 
