@@ -1,122 +1,143 @@
-import os
-import sys
-import time
-from parser import CTSParser
-from algorithm.median_partition import MedianPartitionCTS
-from delay_calc import DelayCalculator
-from optimizer import CTSOptimizer
-from validator import CTSValidator
-from visualizer import CTSVisualizer
+import math
+from typing import List, Dict, Any, Tuple, Optional
+from models import ClockNode, ClockSource, Sink, BufferType, WireModel
 
-def print_divider():
-    print("-" * 60)
+class MedianPartitionCTS:
+    """
+    Класс синтеза дерева синхронизации на основе алгоритма медианного разбиения.
+    """
+    def __init__(
+        self, 
+        clock_source: ClockSource, 
+        sinks: List[Sink], 
+        buffers: Dict[str, BufferType], 
+        tree_params: Dict[str, Any]
+    ):
+        self.clock_source = clock_source
+        self.sinks = sinks
+        self.buffers = buffers
+        self.params = tree_params
+        
+        self.max_fanout = int(self.params.get("max_fanout", 4))
+        self.min_sinks = int(self.params.get("min_sinks_for_partition", 2))
+        self.criterion = self.params.get("partition_criterion", "balanced_capacitance")
+        self.axis_mode = self.params.get("partition_axis", "auto")
+        self.median_type = self.params.get("median_type", "geometric_median")
+        self.buffer_insertion = self.params.get("buffer_insertion", True)
+        self.buffer_selection = self.params.get("buffer_selection", "size_by_load")
+        
+        self.default_buffer = min(buffers.values(), key=lambda b: b.drive_strength) if buffers else None
+        self.node_counter = 0
 
-def main():
-    # Задаем пути к файлам
-    input_file = os.path.join("data", "input.json")
-    output_file = os.path.join("data", "output.txt")
-    
-    # Создаем директорию для данных, если её нет
-    os.makedirs("data", exist_ok=True)
-    
-    if not os.path.exists(input_file):
-        print(f"[Ошибка] Пожалуйста, положите входной JSON-файл по пути: {input_file}")
-        sys.exit(1)
-        
-    print_divider()
-    print("=== ЗАПУСК СИНТЕЗА ЦЕПЕЙ СИНХРОНИЗАЦИИ (CTS) ===")
-    print_divider()
-    
-    start_time = time.time()
-    
-    # 1. Шаг Парсинга
-    print("[1/5] Чтение и валидация конфигурации JSON...")
-    parser = CTSParser(input_file)
-    try:
-        clock_source, sinks, buffers, wire_model, tree_params, opt_params = parser.parse()
-        print(f"-> Успешно загружено потребителей (Sinks): {len(sinks)}")
-        print(f"-> Доступно типов буферов: {len(buffers)}")
-        print(f"-> Выбранная модель проводов: {wire_model.model.upper()}")
-    except Exception as e:
-        print(f"[Критическая ошибка парсинга]: {e}")
-        sys.exit(1)
-        
-    # 2. Шаг Синтеза дерева (Алгоритм медианного разбиения)
-    print("[2/5] Запуск рекурсивного медианного разбиения...")
-    cts_engine = MedianPartitionCTS(clock_source, sinks, buffers, tree_params)
-    root_node = cts_engine.build_tree()
-    print("-> Топология дерева успешно построена.")
-    
-    # 3. Первичный расчет задержек
-    print("[3/5] Расчет первоначальных задержек...")
-    calculator = DelayCalculator(wire_model)
-    initial_delays, initial_skew = calculator.calculate(root_node)
-    print(f"-> Исходный разброс задержек (Initial Skew): {initial_skew:.4f} нс")
-    
-    # 4. Постоптимизация (Выравнивание веток / Snaking)
-    print("[4/5] Оптимизация дерева (Wire Snaking)...")
-    optimizer = CTSOptimizer(wire_model, opt_params)
-    final_delays, final_skew = optimizer.optimize(root_node)
-    print(f"-> Финальный разброс задержек (Final Skew): {final_skew:.4f} нс")
-    
-    # 5. Верификация результатов (Валидатор)
-    print("[5/5] Верификация физических и временных ограничений...")
-    validator = CTSValidator(
-        max_fanout=int(tree_params.get("max_fanout", 4)),
-        max_depth=int(tree_params.get("max_depth", 10)),
-        chip_width=parser.chip_width,
-        chip_height=parser.chip_height,
-        available_buffers=buffers
-    )
-    is_valid, errors, warnings = validator.validate(root_node, len(sinks), final_delays)
-    
-    execution_time = time.time() - start_time
-    
-    # Вывод результатов проверки в консоль
-    if is_valid:
-        print("-> [УСПЕХ] Дерево синхронизации успешно прошло все проверки!")
-    else:
-        print(f"-> [ОШИБКА] Обнаружено ошибок при верификации: {len(errors)}")
-        for err in errors:
-            print(f"   ! {err}")
+    def _next_node_id(self, prefix: str) -> str:
+        self.node_counter += 1
+        return f"{prefix}_{self.node_counter}"
+
+    def build_tree(self) -> ClockNode:
+        root = ClockNode(
+            id=self.clock_source.id,
+            x=self.clock_source.x,
+            y=self.clock_source.y,
+            node_type="source"
+        )
+        if not self.sinks:
+            return root
             
-    if warnings:
-        print(f"-> [ПРЕДУПРЕЖДЕНИЕ] Найдено замечаний: {len(warnings)}")
-        for warn in warnings:
-            print(f"   * {warn}")
-            
-    # Запись итогового текстового отчета в выходной файл
-    print_divider()
-    print(f"Сохранение результатов в отчет: {output_file}...")
-    
-    with open(output_file, "w", encoding="utf-8") as out:
-        out.write("=== РЕЗУЛЬТАТЫ СИНТЕЗА ЦЕПЕЙ СИНХРОНИЗАЦИИ (CTS) ===\n")
-        out.write(f"Статус валидации: {'УСПЕШНО' if is_valid else 'ОШИБКА НАЙДЕНА'}\n")
-        out.write(f"Время работы алгоритма: {execution_time:.4f} сек.\n")
-        out.write(f"Максимальная задержка: {max(final_delays.values()):.4f} нс\n")
-        out.write(f"Минимальная задержка: {min(final_delays.values()):.4f} нс\n")
-        out.write(f"Разброс задержек (Skew): {final_skew:.4f} нс\n")
-        out.write(f"Целевой разброс (Skew Target): {opt_params.get('skew_target', 0.05)} нс\n")
-        out.write("\n--- ЗАДЕРЖКИ ДО ТЕРМИНАЛОВ (SINKS) ---\n")
-        for s_id, delay in sorted(final_delays.items()):
-            out.write(f"Терминал {s_id}: задержка = {delay:.4f} нс\n")
-            
-        out.write("\n--- ТОПОЛОГИЯ ДЕРЕВА (СПИСОК СОЕДИНЕНИЙ) ---\n")
-        # Вспомогательная функция для дампа связей графа в файл
-        def dump_topology(node):
-            for child in node.children:
-                out.write(
-                    f"Узел {node.id} ({node.node_type}) [{node.x}, {node.y}] -> "
-                    f"Узел {child.id} ({child.node_type}) [{child.x}, {child.y}] | "
-                    f"Длина провода: {child.wire_length_to_parent:.2f}\n"
+        self._partition_recursive(root, self.sinks, depth=1)
+        return root
+
+    def _partition_recursive(self, parent_node: ClockNode, current_sinks: List[Sink], depth: int):
+        if len(current_sinks) <= self.max_fanout:
+            for sk in current_sinks:
+                sink_node = ClockNode(
+                    id=sk.id, x=sk.x, y=sk.y, 
+                    node_type="sink", sink_ref=sk
                 )
-                dump_topology(child)
-        dump_topology(root_node)
+                parent_node.add_child(sink_node)
+            return
 
-    print("=== CTS КОМПИЛЯТОР УСПЕШНО ЗАВЕРШИЛ РАБОТУ ===")
-    print_divider()
-print("[Бонус] Генерация графического отчета...")
-    visualizer = CTSVisualizer(parser.chip_width, parser.chip_height)
-    visualizer.plot_tree(root_node, save_path=os.path.join("data", "clock_tree.png"))
-if __name__ == "__main__":
-    main()
+        axis = self._choose_axis(current_sinks, depth)
+        if axis == 'x':
+            current_sinks.sort(key=lambda s: s.x)
+        else:
+            current_sinks.sort(key=lambda s: s.y)
+
+        # Делим на K сбалансированных групп (K <= max_fanout)
+        k = min(self.max_fanout, len(current_sinks))
+        groups = self._split_into_k_groups(current_sinks, k)
+
+        for group in groups:
+            if not group:
+                continue
+                
+            branch_x, branch_y = self._calculate_median_position(group)
+            node_type = "buffer" if self.buffer_insertion else "branch"
+            
+            branch_node = ClockNode(
+                id=self._next_node_id("BUF" if node_type == "buffer" else "BR"),
+                x=branch_x, y=branch_y,
+                node_type=node_type
+            )
+            
+            if node_type == "buffer" and self.default_buffer:
+                branch_node.buffer_ref = self._select_buffer_for_group(group)
+
+            parent_node.add_child(branch_node)
+            self._partition_recursive(branch_node, group, depth + 1)
+
+    def _choose_axis(self, sinks: List[Sink], depth: int) -> str:
+        if self.axis_mode == "x": return "x"
+        if self.axis_mode == "y": return "y"
+        if self.axis_mode == "alternate": return "x" if depth % 2 != 0 else "y"
+            
+        xs = [s.x for s in sinks]
+        ys = [s.y for s in sinks]
+        return "x" if (max(xs) - min(xs)) >= (max(ys) - min(ys)) else "y"
+
+    def _split_into_k_groups(self, sorted_sinks: List[Sink], k: int) -> List[List[Sink]]:
+        """Разбивает массив на K сбалансированных групп"""
+        if self.criterion == "balanced_count":
+            n = len(sorted_sinks)
+            return [sorted_sinks[i * n // k: (i + 1) * n // k] for i in range(k)]
+
+        total_cap = sum(s.capacitance for s in sorted_sinks)
+        target_step = total_cap / k
+        
+        groups = [[] for _ in range(k)]
+        current_group = 0
+        accumulated_cap = 0.0
+        
+        for s in sorted_sinks:
+            groups[current_group].append(s)
+            accumulated_cap += s.capacitance
+            if accumulated_cap >= target_step * (current_group + 1) and current_group < k - 1:
+                current_group += 1
+                
+        return groups
+
+    def _calculate_median_position(self, sinks: List[Sink]) -> Tuple[float, float]:
+        if self.median_type == "centroid":
+            total_cap = sum(s.capacitance for s in sinks)
+            if total_cap == 0:
+                return sinks[0].x, sinks[0].y
+            cx = sum(s.x * s.capacitance for s in sinks) / total_cap
+            cy = sum(s.y * s.capacitance for s in sinks) / total_cap
+            return cx, cy
+
+        xs = sorted([s.x for s in sinks])
+        ys = sorted([s.y for s in sinks])
+        return xs[len(xs) // 2], ys[len(ys) // 2]
+
+    def _select_buffer_for_group(self, sinks: List[Sink]) -> BufferType:
+        if self.buffer_selection == "uniform" or not self.buffers:
+            return self.default_buffer
+            
+        total_cap = sum(s.capacitance for s in sinks)
+        sorted_bufs = sorted(self.buffers.values(), key=lambda b: b.drive_strength)
+        
+        if total_cap < 15.0:
+            return sorted_bufs[0]
+        elif total_cap < 30.0 and len(sorted_bufs) > 1:
+            return sorted_bufs[1]
+        else:
+            return sorted_bufs[-1]
