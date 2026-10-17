@@ -3,6 +3,7 @@ import os
 from typing import Dict, Any, Tuple
 from models import ClockSource, Sink, BufferType, WireModel
 
+
 def round_to_grid(coord: float, grid_size: float) -> float:
     """Округляет координату до ближайшего шага сетки grid_size"""
     if grid_size <= 0:
