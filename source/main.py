@@ -57,11 +57,13 @@ def main():
         print(f"[Критическая ошибка парсинга]: {e}")
         sys.exit(1)
         
-    # 2. Шаг Синтеза дерева (Алгоритм медианного разбиения)
+       # 2. Шаг Синтеза дерева (Алгоритм медианного разбиения)
     print("[2/6] Запуск рекурсивного медианного разбиения...")
-    cts_engine = MedianPartitionCTS(clock_source, sinks, buffers, tree_params)
+    # ИЗМЕНЕНО: Передаем wire_model четвертым аргументом
+    cts_engine = MedianPartitionCTS(clock_source, sinks, buffers, wire_model, tree_params)
     root_node = cts_engine.build_tree()
-    print("-> Топология дерева успешно построена.")
+    print("-> Toпoлогия дерева успешно построена.")
+
     
     # 3. Первичный расчет задержек
     print("[3/6] Расчет первоначальных задержек...")

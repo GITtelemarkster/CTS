@@ -4,18 +4,20 @@ from models import ClockNode, ClockSource, Sink, BufferType, WireModel
 
 class MedianPartitionCTS:
     """
-    Класс синтеза дерева синхронизации на основе алгоритма медианного разбиения.
+    Класс синтеза дерева синхронизации на основе классического бинарного алгоритма медианного разбиения.
     """
     def __init__(
         self, 
         clock_source: ClockSource, 
         sinks: List[Sink], 
         buffers: Dict[str, BufferType], 
+        wire_model: WireModel,  # ИЗМЕНЕНО: Добавили аргумент в конструктор
         tree_params: Dict[str, Any]
     ):
         self.clock_source = clock_source
         self.sinks = sinks
         self.buffers = buffers
+        self.wire_model = wire_model  # ИЗМЕНЕНО: Сохраняем в атрибуты класса
         self.params = tree_params
         
         self.max_fanout = int(self.params.get("max_fanout", 4))
@@ -65,10 +67,8 @@ class MedianPartitionCTS:
         else:
             current_sinks.sort(key=lambda s: s.y)
 
-        # 2. Делим на K подгрупп (где K = max_fanout), чтобы не перегружать родительский узел
-        # Для классического бинарного деления можно использовать K=2, но K=max_fanout эффективнее по глубине
-        k = min(self.max_fanout, len(current_sinks))
-        groups = self._split_into_k_groups(current_sinks, k)
+        # 2. ИЗМЕНЕНО: Строго бинарное деление на 2 подгруппы для классического алгоритма
+        groups = self._split_into_k_groups(current_sinks, k=2)
 
         # 3. Для каждой подгруппы создаем свой дочерний буфер/точку ветвления
         for group in groups:
@@ -87,7 +87,7 @@ class MedianPartitionCTS:
             if node_type == "buffer" and self.default_buffer:
                 child_node.buffer_ref = self._select_buffer_for_group(group)
 
-            # Подключаем к родителю (у него будет не более max_fanout детей)
+            # Подключаем к родителю (в бинарном режиме у промежуточного узла будет строго 2 потомка)
             parent_node.add_child(child_node)
 
             # Рекурсивно уходим вниз
@@ -102,34 +102,53 @@ class MedianPartitionCTS:
         ys = [s.y for s in sinks]
         return "x" if (max(xs) - min(xs)) >= (max(ys) - min(ys)) else "y"
 
-    def _split_into_k_groups(self, sorted_sinks: List[Sink], k: int) -> List[List[Sink]]:
-        """Разбивает массив на K сбалансированных групп по емкости или количеству"""
-        if self.criterion == "balanced_count":
-            n = len(sorted_sinks)
-            return [sorted_sinks[i * n // k: (i + 1) * n // k] for i in range(k)]
+    def _split_into_k_groups(self, sorted_sinks: List[Sink], k: int = 2) -> List[List[Sink]]:
+        """
+        ИЗМЕНЕНО: Разбивает массив строго на 2 сбалансированные группы по количеству или емкости.
+        Параметр k игнорируется для обеспечения строго бинарного разбиения.
+        """
+        n = len(sorted_sinks)
+        if n < 2:
+            return [sorted_sinks, []]
 
-        # balanced_capacitance разбиение на K частей
+        # Классическое бинарное разбиение по количеству (Strict Midpoint)
+        if self.criterion == "balanced_count":
+            mid = n // 2
+            return [sorted_sinks[:mid], sorted_sinks[mid:]]
+
+        # Бинарное разбиение по емкости (Balanced Capacitance)
         total_cap = sum(s.capacitance for s in sorted_sinks)
-        target_step = total_cap / k
+        target_half = total_cap / 2.0
         
-        groups = [[] for _ in range(k)]
-        current_group = 0
         accumulated_cap = 0.0
+        split_index = 0
         
-        for s in sorted_sinks:
-            groups[current_group].append(s)
+        for i, s in enumerate(sorted_sinks):
             accumulated_cap += s.capacitance
-            # Переходим к следующей группе, если заполнили текущий лимит (но держим в рамках k-1)
-            if accumulated_cap >= target_step * (current_group + 1) and current_group < k - 1:
-                current_group += 1
+            if accumulated_cap >= target_half:
+                # Проверяем, какая точка деления ближе к идеальной половине: текущая или предыдущая
+                prev_error = abs((accumulated_cap - s.capacitance) - target_half)
+                curr_error = abs(accumulated_cap - target_half)
                 
-        return groups
+                if prev_error < curr_error and i > 0:
+                    split_index = i
+                else:
+                    split_index = i + 1
+                break
+        
+        # Гарантируем отсутствие пустых групп в крайних случаях
+        if split_index == 0: 
+            split_index = 1
+        elif split_index == n: 
+            split_index = n - 1
+
+        return [sorted_sinks[:split_index], sorted_sinks[split_index:]]
 
     def _calculate_median_position(self, sinks: List[Sink]) -> Tuple[float, float]:
         if self.median_type == "centroid":
             total_cap = sum(s.capacitance for s in sinks)
             if total_cap == 0:
-                return sinks[0].x, sinks[0].y  # Исправлен баг с sinks.x
+                return sinks[0].x, sinks[0].y
             cx = sum(s.x * s.capacitance for s in sinks) / total_cap
             cy = sum(s.y * s.capacitance for s in sinks) / total_cap
             return cx, cy
@@ -142,12 +161,26 @@ class MedianPartitionCTS:
         if self.buffer_selection == "uniform" or not self.buffers:
             return self.default_buffer
             
-        total_cap = sum(s.capacitance for s in sinks)
+        # Считаем емкость потребителей
+        sinks_cap = sum(s.capacitance for s in sinks)
+        
+        # Оценка емкости проводов: берем примерный периметр зоны, занимаемой sinks
+        if len(sinks) > 1:
+            xs = [s.x for s in sinks]
+            ys = [s.y for s in sinks]
+            estimated_wire_len = (max(xs) - min(xs)) + (max(ys) - min(ys))
+            wire_cap = estimated_wire_len * self.wire_model.unit_capacitance
+        else:
+            wire_cap = 0.0
+            
+        total_cap = sinks_cap + wire_cap
         sorted_bufs = sorted(self.buffers.values(), key=lambda b: b.drive_strength)
         
+        # Динамический выбор: самый мощный буфер для тяжелой нагрузки
         if total_cap < 15.0:
             return sorted_bufs[0]
-        elif total_cap < 30.0 and len(sorted_bufs) > 1:
+        elif total_cap < 35.0 and len(sorted_bufs) > 1:
             return sorted_bufs[1]
         else:
-            return sorted_bufs[-1]
+            return sorted_bufs[-1]  # Самый мощный буфер из библиотеки
+

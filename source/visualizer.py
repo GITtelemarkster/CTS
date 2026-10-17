@@ -11,6 +11,7 @@ class CTSVisualizer:
     def plot_tree(self, root: ClockNode, save_path: str = "data/clock_tree.png"):
         """
         Строит двумерный график дерева синхронизации и сохраняет его в файл.
+        Включает подписи идентификаторов для всех элементов: источников, буферов и терминалов.
         """
         plt.figure(figsize=(10, 10))
         plt.title("Визуализация дерева синхронизации (Clock Tree Topology)", fontsize=14, fontweight='bold')
@@ -33,16 +34,27 @@ class CTSVisualizer:
             if node.node_type == "source":
                 sources_x.append(node.x)
                 sources_y.append(node.y)
+                # Подпись для источника (крупный красный шрифт, чуть выше маркера)
+                plt.text(node.x, node.y + 8, node.id, color='red', fontsize=10, 
+                         fontweight='bold', ha='center', va='bottom', zorder=7)
+                
             elif node.node_type in ["buffer", "branch"]:
                 buffers_x.append(node.x)
                 buffers_y.append(node.y)
+                # Подпись для буферов/бранчей (зеленый аккуратный шрифт, чуть сбоку-сверху)
+                label_color = 'darkgreen' if node.node_type == "buffer" else "olive"
+                plt.text(node.x + 4, node.y + 4, node.id, color=label_color, fontsize=8, 
+                         fontweight='semibold', ha='left', va='bottom', zorder=7)
+                
             elif node.node_type == "sink":
                 sinks_x.append(node.x)
                 sinks_y.append(node.y)
+                # ИЗМЕНЕНО: Добавляем подпись для терминалов (мелкий синий шрифт, снизу-слева от маркера)
+                plt.text(node.x - 3, node.y - 3, node.id, color='darkblue', fontsize=7, 
+                         alpha=0.8, ha='right', va='top', zorder=7)
 
             for child in node.children:
                 # Рисуем Манхэттенский провод (сначала по X, потом по Y)
-                # Это наглядно показывает реальную геометрию трассировки на чипе
                 plt.plot([node.x, child.x], [node.y, node.y], color='gray', alpha=0.6, lw=1.5)
                 plt.plot([child.x, child.x], [node.y, child.y], color='gray', alpha=0.6, lw=1.5)
                 
