@@ -160,7 +160,12 @@ class InputFile(StrictModel):
 
         for s in self.sinks:
             self._check_inside_chip(s.x, s.y, f"sink {s.id!r}")
-
+            if s.x // s.x // Design.grid_size != 0 and s.y // Design.grid_size != 0:
+                raise ValueError(f"Координаты sinkа под id {s.id!r} не кратны шагу сетки!")
+            if s.x // Design.grid_size != 0:
+                raise ValueError(f"X координата sinkа под id {s.id!r} не кратна шагу сетки!")
+            if s.y // Design.grid_size != 0:
+                raise ValueError((f"Y координата sinkа под id {s.id!r} не кратна шагу сетки!"))
 
         if self.tree_params.buffer_insertion and not self.buffers:
             raise ValueError(
