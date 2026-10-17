@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import argparse  # Добавлен модуль для обработки аргументов командной строки
 from parser import CTSParser
 from median_partition import MedianPartitionCTS
 from delay_calc import DelayCalculator
@@ -12,13 +13,27 @@ def print_divider():
     print("-" * 60)
 
 def main():
-    # Задаем пути к файлам
-    input_file = os.path.join("data", "input.json")
-    output_file = os.path.join("data", "output.txt")
-    image_file = os.path.join("data", "clock_tree.png")
+    # Настройка парсера аргументов командной строки
+    arg_parser = argparse.ArgumentParser(description="CTS Compiler Tool")
+    arg_parser.add_argument("--input", type=str, default=os.path.join("data", "input.json"), 
+                            help="Путь к входному JSON файлу конфигурации")
+    arg_parser.add_argument("--output_dir", type=str, default="data", 
+                            help="Папка для сохранения выходных файлов (отчетов и графиков)")
+    arg_parser.add_argument("--name", type=str, default="", 
+                            help="Префикс имени для выходных файлов (например, test_easy)")
     
-    # Создаем директорию для данных, если её нет
-    os.makedirs("data", exist_ok=True)
+    args = arg_parser.parse_args()
+
+    # Задаем пути на основе полученных аргументов
+    input_file = args.input
+    
+    # Формируем имена файлов с учетом префикса тест-кейса
+    prefix = f"_{args.name}" if args.name else ""
+    output_file = os.path.join(args.output_dir, f"output{prefix}.txt")
+    image_file = os.path.join(args.output_dir, f"clock_tree{prefix}.png")
+    
+    # Создаем целевую директорию для результатов, если её нет
+    os.makedirs(args.output_dir, exist_ok=True)
     
     if not os.path.exists(input_file):
         print(f"[Ошибка] Пожалуйста, положите входной JSON-файл по пути: {input_file}")
@@ -108,8 +123,6 @@ def main():
         out.write(f"Целевой разброс (Skew Target): {opt_params.get('skew_target', 0.05)} нс\n")
         
         out.write("\n--- ЗАДЕРЖКИ ДО ТЕРМИНАЛОВ (SINKS) ---\n")
-        # Ключ lambda x: int(x[0][1:]) извлекает числовую часть из ID (например, из 'S105' берет 105)
-        # благодаря этому сортировка будет идти строго по возрастанию номеров
         sorted_sinks = sorted(final_delays.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else x[0])
         
         for s_id, delay in sorted_sinks:
@@ -117,7 +130,6 @@ def main():
 
             
         out.write("\n--- ТОПОЛОГИЯ ДЕРЕВА (СПИСОК СОЕДИНЕНИЙ) ---\n")
-        # Вспомогательная функция для дампа связей графа в файл
         def dump_topology(node):
             for child in node.children:
                 out.write(
