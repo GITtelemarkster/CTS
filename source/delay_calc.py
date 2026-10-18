@@ -20,8 +20,8 @@ class DelayCalculator:
         self.scale = float(getattr(wire_model, 'unit_length', 1.0))
         
         # Коэффициент масштабирования емкости: из фемтофарад (фФ) в пикофарады (пФ)
-        # 1 фФ = 1e-3 пФ. Необходим, чтобы Ohm * pF давал наносекунды (ns).
-        self.FF_TO_PF = 1e-3
+   
+        self.FF_TO_PF = 1e-15
 
     def calculate(self, root: ClockNode) -> Tuple[Dict[str, float], float]:
         """
