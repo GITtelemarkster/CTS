@@ -6,7 +6,7 @@
   },
   "clock_source": {
     "id": "CLK_SRC",
-    "x": 1200.0,
+    "x": 1000.0,
     "y": 2000.0,
     "pin_id": "CLK_PIN",
     "input_capacitance": 0.0,
@@ -15,8 +15,8 @@
   "sinks": [
     {
       "id": "S1",
-      "x": 1387.0,
-      "y": 771.0,
+      "x": 1873.0,
+      "y": 1599.0,
       "pin_id": "S1_PIN",
       "capacitance": 2.5,
       "required_arrival_time": 2.5,
@@ -24,82 +24,82 @@
     },
     {
       "id": "S2",
-      "x": 329.0,
-      "y": 579.0,
+      "x": 1536.0,
+      "y": 1912.0,
       "pin_id": "S2_PIN",
-      "capacitance": 4.6,
+      "capacitance": 3.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S3",
-      "x": 1881.0,
-      "y": 811.0,
+      "x": 897.0,
+      "y": 570.0,
       "pin_id": "S3_PIN",
-      "capacitance": 5.8,
+      "capacitance": 5.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S4",
-      "x": 1797.0,
-      "y": 498.0,
+      "x": 1736.0,
+      "y": 1467.0,
       "pin_id": "S4_PIN",
-      "capacitance": 4.4,
+      "capacitance": 5.1,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S5",
-      "x": 602.0,
-      "y": 1455.0,
+      "x": 1685.0,
+      "y": 190.0,
       "pin_id": "S5_PIN",
-      "capacitance": 2.1,
+      "capacitance": 3.6,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S6",
-      "x": 1609.0,
-      "y": 690.0,
+      "x": 760.0,
+      "y": 1770.0,
       "pin_id": "S6_PIN",
-      "capacitance": 5.9,
+      "capacitance": 4.4,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S7",
-      "x": 1463.0,
-      "y": 311.0,
+      "x": 227.0,
+      "y": 1020.0,
       "pin_id": "S7_PIN",
-      "capacitance": 4.8,
+      "capacitance": 4.2,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S8",
-      "x": 667.0,
-      "y": 161.0,
+      "x": 343.0,
+      "y": 535.0,
       "pin_id": "S8_PIN",
-      "capacitance": 3.4,
+      "capacitance": 5.3,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S9",
-      "x": 1445.0,
-      "y": 1966.0,
+      "x": 943.0,
+      "y": 504.0,
       "pin_id": "S9_PIN",
-      "capacitance": 2.2,
+      "capacitance": 5.9,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S10",
-      "x": 70.0,
-      "y": 1343.0,
+      "x": 1360.0,
+      "y": 289.0,
       "pin_id": "S10_PIN",
-      "capacitance": 4.9,
+      "capacitance": 3.2,
       "required_arrival_time": 2.5,
       "fixed": true
     }
@@ -136,7 +136,7 @@
   "wire_model": {
     "unit_capacitance": 0.2,
     "unit_resistance": 0.05,
-    "unit_length": 1e-6,
+    "unit_length": 1.0,
     "model": "elmore"
   },
   "tree_params": {

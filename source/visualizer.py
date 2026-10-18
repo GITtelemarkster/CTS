@@ -43,14 +43,14 @@ class CTSVisualizer:
                 buffers_y.append(node.y)
                 # Подпись для буферов/бранчей (зеленый аккуратный шрифт, чуть сбоку-сверху)
                 label_color = 'darkgreen' if node.node_type == "buffer" else "olive"
-                plt.text(node.x + 4, node.y + 4, node.id, color=label_color, fontsize=8, 
+                plt.text(node.x + 4, node.y + 4, node.id, color=label_color, fontsize=6, 
                          fontweight='semibold', ha='left', va='bottom', zorder=7)
                 
             elif node.node_type == "sink":
                 sinks_x.append(node.x)
                 sinks_y.append(node.y)
                 # ИЗМЕНЕНО: Добавляем подпись для терминалов (мелкий синий шрифт, снизу-слева от маркера)
-                plt.text(node.x - 3, node.y - 3, node.id, color='darkblue', fontsize=7, 
+                plt.text(node.x - 3, node.y - 3, node.id, color='darkblue', fontsize=5, 
                          alpha=0.8, ha='right', va='top', zorder=7)
 
             for child in node.children:
@@ -66,11 +66,11 @@ class CTSVisualizer:
 
         # Отрисовка узлов поверх линий
         if sinks_x:
-            plt.scatter(sinks_x, sinks_y, color='blue', marker='s', s=40, label='Sinks (Терминалы)', zorder=4)
+            plt.scatter(sinks_x, sinks_y, color='blue', marker='s', s=10, label='Sinks (Терминалы)', zorder=4)
         if buffers_x:
-            plt.scatter(buffers_x, buffers_y, color='green', marker='^', s=60, label='Buffers / Branch (Буферы)', zorder=5)
+            plt.scatter(buffers_x, buffers_y, color='green', marker='^', s=30, label='Buffers / Branch (Буферы)', zorder=5)
         if sources_x:
-            plt.scatter(sources_x, sources_y, color='red', marker='o', s=100, label='Clock Source (Корень)', zorder=6)
+            plt.scatter(sources_x, sources_y, color='red', marker='o', s=50, label='Clock Source (Корень)', zorder=6)
 
         plt.xlabel("Координата X", fontsize=12)
         plt.ylabel("Координата Y", fontsize=12)

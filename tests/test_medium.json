@@ -15,53 +15,53 @@
   "sinks": [
     {
       "id": "S1",
-      "x": 369.0,
-      "y": 1245.0,
+      "x": 1079.0,
+      "y": 1499.0,
       "pin_id": "S1_PIN",
-      "capacitance": 5.5,
+      "capacitance": 3.6,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S2",
-      "x": 1258.0,
-      "y": 1119.0,
+      "x": 167.0,
+      "y": 898.0,
       "pin_id": "S2_PIN",
-      "capacitance": 5.5,
+      "capacitance": 3.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S3",
-      "x": 40.0,
-      "y": 907.0,
+      "x": 1538.0,
+      "y": 1104.0,
       "pin_id": "S3_PIN",
-      "capacitance": 2.2,
+      "capacitance": 5.6,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S4",
-      "x": 742.0,
-      "y": 126.0,
+      "x": 1768.0,
+      "y": 588.0,
       "pin_id": "S4_PIN",
-      "capacitance": 2.5,
+      "capacitance": 2.3,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S5",
-      "x": 395.0,
-      "y": 1383.0,
+      "x": 1195.0,
+      "y": 1839.0,
       "pin_id": "S5_PIN",
-      "capacitance": 2.8,
+      "capacitance": 2.2,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S6",
-      "x": 63.0,
-      "y": 608.0,
+      "x": 790.0,
+      "y": 1518.0,
       "pin_id": "S6_PIN",
       "capacitance": 5.8,
       "required_arrival_time": 2.5,
@@ -69,503 +69,503 @@
     },
     {
       "id": "S7",
-      "x": 1109.0,
-      "y": 1173.0,
+      "x": 1621.0,
+      "y": 1900.0,
       "pin_id": "S7_PIN",
-      "capacitance": 4.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S8",
-      "x": 1597.0,
-      "y": 1095.0,
-      "pin_id": "S8_PIN",
-      "capacitance": 3.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S9",
-      "x": 1972.0,
-      "y": 1184.0,
-      "pin_id": "S9_PIN",
-      "capacitance": 4.9,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S10",
-      "x": 1367.0,
-      "y": 207.0,
-      "pin_id": "S10_PIN",
-      "capacitance": 2.9,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S11",
-      "x": 1357.0,
-      "y": 1495.0,
-      "pin_id": "S11_PIN",
-      "capacitance": 4.0,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S12",
-      "x": 1139.0,
-      "y": 196.0,
-      "pin_id": "S12_PIN",
-      "capacitance": 4.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S13",
-      "x": 1690.0,
-      "y": 7.0,
-      "pin_id": "S13_PIN",
-      "capacitance": 4.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S14",
-      "x": 1471.0,
-      "y": 1972.0,
-      "pin_id": "S14_PIN",
-      "capacitance": 2.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S15",
-      "x": 66.0,
-      "y": 616.0,
-      "pin_id": "S15_PIN",
-      "capacitance": 4.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S16",
-      "x": 1541.0,
-      "y": 1003.0,
-      "pin_id": "S16_PIN",
-      "capacitance": 2.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S17",
-      "x": 1518.0,
-      "y": 1310.0,
-      "pin_id": "S17_PIN",
-      "capacitance": 2.8,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S18",
-      "x": 1381.0,
-      "y": 1975.0,
-      "pin_id": "S18_PIN",
-      "capacitance": 4.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S19",
-      "x": 398.0,
-      "y": 59.0,
-      "pin_id": "S19_PIN",
-      "capacitance": 5.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S20",
-      "x": 1801.0,
-      "y": 533.0,
-      "pin_id": "S20_PIN",
-      "capacitance": 5.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S21",
-      "x": 168.0,
-      "y": 1926.0,
-      "pin_id": "S21_PIN",
-      "capacitance": 5.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S22",
-      "x": 192.0,
-      "y": 530.0,
-      "pin_id": "S22_PIN",
-      "capacitance": 4.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S23",
-      "x": 1221.0,
-      "y": 862.0,
-      "pin_id": "S23_PIN",
-      "capacitance": 5.7,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S24",
-      "x": 1273.0,
-      "y": 1642.0,
-      "pin_id": "S24_PIN",
-      "capacitance": 4.7,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S25",
-      "x": 1232.0,
-      "y": 1684.0,
-      "pin_id": "S25_PIN",
-      "capacitance": 5.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S26",
-      "x": 102.0,
-      "y": 332.0,
-      "pin_id": "S26_PIN",
-      "capacitance": 3.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S27",
-      "x": 1161.0,
-      "y": 1360.0,
-      "pin_id": "S27_PIN",
-      "capacitance": 5.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S28",
-      "x": 1767.0,
-      "y": 810.0,
-      "pin_id": "S28_PIN",
-      "capacitance": 3.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S29",
-      "x": 197.0,
-      "y": 1332.0,
-      "pin_id": "S29_PIN",
-      "capacitance": 3.7,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S30",
-      "x": 590.0,
-      "y": 1093.0,
-      "pin_id": "S30_PIN",
-      "capacitance": 3.0,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S31",
-      "x": 1300.0,
-      "y": 611.0,
-      "pin_id": "S31_PIN",
-      "capacitance": 2.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S32",
-      "x": 694.0,
-      "y": 968.0,
-      "pin_id": "S32_PIN",
-      "capacitance": 2.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S33",
-      "x": 1279.0,
-      "y": 660.0,
-      "pin_id": "S33_PIN",
-      "capacitance": 2.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S34",
-      "x": 820.0,
-      "y": 338.0,
-      "pin_id": "S34_PIN",
-      "capacitance": 2.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S35",
-      "x": 1983.0,
-      "y": 1156.0,
-      "pin_id": "S35_PIN",
-      "capacitance": 4.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S36",
-      "x": 1526.0,
-      "y": 1215.0,
-      "pin_id": "S36_PIN",
-      "capacitance": 2.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S37",
-      "x": 1280.0,
-      "y": 73.0,
-      "pin_id": "S37_PIN",
-      "capacitance": 5.4,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S38",
-      "x": 1912.0,
-      "y": 204.0,
-      "pin_id": "S38_PIN",
-      "capacitance": 2.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S39",
-      "x": 1691.0,
-      "y": 44.0,
-      "pin_id": "S39_PIN",
-      "capacitance": 3.9,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S40",
-      "x": 196.0,
-      "y": 1969.0,
-      "pin_id": "S40_PIN",
-      "capacitance": 3.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S41",
-      "x": 586.0,
-      "y": 153.0,
-      "pin_id": "S41_PIN",
-      "capacitance": 3.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S42",
-      "x": 602.0,
-      "y": 637.0,
-      "pin_id": "S42_PIN",
-      "capacitance": 2.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S43",
-      "x": 1828.0,
-      "y": 171.0,
-      "pin_id": "S43_PIN",
-      "capacitance": 3.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S44",
-      "x": 1596.0,
-      "y": 767.0,
-      "pin_id": "S44_PIN",
-      "capacitance": 3.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S45",
-      "x": 1753.0,
-      "y": 124.0,
-      "pin_id": "S45_PIN",
-      "capacitance": 2.8,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S46",
-      "x": 77.0,
-      "y": 1624.0,
-      "pin_id": "S46_PIN",
-      "capacitance": 5.0,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S47",
-      "x": 602.0,
-      "y": 1100.0,
-      "pin_id": "S47_PIN",
-      "capacitance": 3.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S48",
-      "x": 894.0,
-      "y": 1170.0,
-      "pin_id": "S48_PIN",
-      "capacitance": 2.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S49",
-      "x": 70.0,
-      "y": 1323.0,
-      "pin_id": "S49_PIN",
-      "capacitance": 2.4,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S50",
-      "x": 1736.0,
-      "y": 1875.0,
-      "pin_id": "S50_PIN",
-      "capacitance": 4.9,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S51",
-      "x": 1288.0,
-      "y": 494.0,
-      "pin_id": "S51_PIN",
-      "capacitance": 3.8,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S52",
-      "x": 1092.0,
-      "y": 1199.0,
-      "pin_id": "S52_PIN",
-      "capacitance": 3.0,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S53",
-      "x": 1988.0,
-      "y": 959.0,
-      "pin_id": "S53_PIN",
       "capacitance": 4.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S54",
-      "x": 1113.0,
-      "y": 659.0,
-      "pin_id": "S54_PIN",
-      "capacitance": 4.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S55",
-      "x": 99.0,
-      "y": 1907.0,
-      "pin_id": "S55_PIN",
-      "capacitance": 3.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S56",
-      "x": 1105.0,
-      "y": 109.0,
-      "pin_id": "S56_PIN",
+      "id": "S8",
+      "x": 1476.0,
+      "y": 1077.0,
+      "pin_id": "S8_PIN",
       "capacitance": 3.1,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S57",
-      "x": 367.0,
-      "y": 1552.0,
-      "pin_id": "S57_PIN",
-      "capacitance": 5.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S58",
-      "x": 538.0,
-      "y": 34.0,
-      "pin_id": "S58_PIN",
+      "id": "S9",
+      "x": 783.0,
+      "y": 1291.0,
+      "pin_id": "S9_PIN",
       "capacitance": 5.0,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S59",
-      "x": 117.0,
-      "y": 1823.0,
-      "pin_id": "S59_PIN",
-      "capacitance": 4.6,
+      "id": "S10",
+      "x": 672.0,
+      "y": 1254.0,
+      "pin_id": "S10_PIN",
+      "capacitance": 4.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S60",
-      "x": 141.0,
-      "y": 1282.0,
-      "pin_id": "S60_PIN",
-      "capacitance": 6.0,
+      "id": "S11",
+      "x": 526.0,
+      "y": 610.0,
+      "pin_id": "S11_PIN",
+      "capacitance": 2.5,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S61",
-      "x": 1218.0,
-      "y": 1669.0,
-      "pin_id": "S61_PIN",
+      "id": "S12",
+      "x": 1276.0,
+      "y": 1693.0,
+      "pin_id": "S12_PIN",
+      "capacitance": 4.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S13",
+      "x": 1060.0,
+      "y": 485.0,
+      "pin_id": "S13_PIN",
+      "capacitance": 2.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S14",
+      "x": 1664.0,
+      "y": 1654.0,
+      "pin_id": "S14_PIN",
+      "capacitance": 5.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S15",
+      "x": 916.0,
+      "y": 1607.0,
+      "pin_id": "S15_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S16",
+      "x": 1626.0,
+      "y": 1827.0,
+      "pin_id": "S16_PIN",
+      "capacitance": 2.2,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S17",
+      "x": 59.0,
+      "y": 338.0,
+      "pin_id": "S17_PIN",
+      "capacitance": 4.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S18",
+      "x": 470.0,
+      "y": 1785.0,
+      "pin_id": "S18_PIN",
+      "capacitance": 4.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S19",
+      "x": 1194.0,
+      "y": 997.0,
+      "pin_id": "S19_PIN",
+      "capacitance": 3.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S20",
+      "x": 225.0,
+      "y": 196.0,
+      "pin_id": "S20_PIN",
+      "capacitance": 4.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S21",
+      "x": 1732.0,
+      "y": 1514.0,
+      "pin_id": "S21_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S22",
+      "x": 651.0,
+      "y": 1894.0,
+      "pin_id": "S22_PIN",
+      "capacitance": 2.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S23",
+      "x": 1965.0,
+      "y": 1189.0,
+      "pin_id": "S23_PIN",
+      "capacitance": 3.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S24",
+      "x": 1593.0,
+      "y": 1683.0,
+      "pin_id": "S24_PIN",
+      "capacitance": 3.2,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S25",
+      "x": 838.0,
+      "y": 1433.0,
+      "pin_id": "S25_PIN",
+      "capacitance": 3.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S26",
+      "x": 1263.0,
+      "y": 1492.0,
+      "pin_id": "S26_PIN",
       "capacitance": 2.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
+      "id": "S27",
+      "x": 153.0,
+      "y": 152.0,
+      "pin_id": "S27_PIN",
+      "capacitance": 5.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S28",
+      "x": 369.0,
+      "y": 874.0,
+      "pin_id": "S28_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S29",
+      "x": 268.0,
+      "y": 1184.0,
+      "pin_id": "S29_PIN",
+      "capacitance": 5.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S30",
+      "x": 814.0,
+      "y": 1864.0,
+      "pin_id": "S30_PIN",
+      "capacitance": 3.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S31",
+      "x": 1578.0,
+      "y": 80.0,
+      "pin_id": "S31_PIN",
+      "capacitance": 2.3,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S32",
+      "x": 835.0,
+      "y": 69.0,
+      "pin_id": "S32_PIN",
+      "capacitance": 5.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S33",
+      "x": 808.0,
+      "y": 602.0,
+      "pin_id": "S33_PIN",
+      "capacitance": 3.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S34",
+      "x": 1982.0,
+      "y": 360.0,
+      "pin_id": "S34_PIN",
+      "capacitance": 3.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S35",
+      "x": 1258.0,
+      "y": 302.0,
+      "pin_id": "S35_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S36",
+      "x": 180.0,
+      "y": 796.0,
+      "pin_id": "S36_PIN",
+      "capacitance": 4.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S37",
+      "x": 779.0,
+      "y": 1643.0,
+      "pin_id": "S37_PIN",
+      "capacitance": 2.7,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S38",
+      "x": 249.0,
+      "y": 438.0,
+      "pin_id": "S38_PIN",
+      "capacitance": 3.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S39",
+      "x": 37.0,
+      "y": 810.0,
+      "pin_id": "S39_PIN",
+      "capacitance": 4.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S40",
+      "x": 229.0,
+      "y": 1932.0,
+      "pin_id": "S40_PIN",
+      "capacitance": 4.2,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S41",
+      "x": 365.0,
+      "y": 353.0,
+      "pin_id": "S41_PIN",
+      "capacitance": 3.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S42",
+      "x": 245.0,
+      "y": 883.0,
+      "pin_id": "S42_PIN",
+      "capacitance": 2.3,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S43",
+      "x": 427.0,
+      "y": 223.0,
+      "pin_id": "S43_PIN",
+      "capacitance": 2.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S44",
+      "x": 1849.0,
+      "y": 214.0,
+      "pin_id": "S44_PIN",
+      "capacitance": 2.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S45",
+      "x": 1161.0,
+      "y": 1494.0,
+      "pin_id": "S45_PIN",
+      "capacitance": 3.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S46",
+      "x": 316.0,
+      "y": 1515.0,
+      "pin_id": "S46_PIN",
+      "capacitance": 2.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S47",
+      "x": 257.0,
+      "y": 165.0,
+      "pin_id": "S47_PIN",
+      "capacitance": 2.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S48",
+      "x": 465.0,
+      "y": 847.0,
+      "pin_id": "S48_PIN",
+      "capacitance": 2.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S49",
+      "x": 1198.0,
+      "y": 1066.0,
+      "pin_id": "S49_PIN",
+      "capacitance": 3.7,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S50",
+      "x": 971.0,
+      "y": 115.0,
+      "pin_id": "S50_PIN",
+      "capacitance": 3.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S51",
+      "x": 1926.0,
+      "y": 1021.0,
+      "pin_id": "S51_PIN",
+      "capacitance": 5.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S52",
+      "x": 257.0,
+      "y": 20.0,
+      "pin_id": "S52_PIN",
+      "capacitance": 4.7,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S53",
+      "x": 1422.0,
+      "y": 23.0,
+      "pin_id": "S53_PIN",
+      "capacitance": 4.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S54",
+      "x": 327.0,
+      "y": 1928.0,
+      "pin_id": "S54_PIN",
+      "capacitance": 3.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S55",
+      "x": 84.0,
+      "y": 933.0,
+      "pin_id": "S55_PIN",
+      "capacitance": 4.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S56",
+      "x": 927.0,
+      "y": 113.0,
+      "pin_id": "S56_PIN",
+      "capacitance": 5.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S57",
+      "x": 1957.0,
+      "y": 261.0,
+      "pin_id": "S57_PIN",
+      "capacitance": 4.1,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S58",
+      "x": 1912.0,
+      "y": 714.0,
+      "pin_id": "S58_PIN",
+      "capacitance": 4.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S59",
+      "x": 127.0,
+      "y": 171.0,
+      "pin_id": "S59_PIN",
+      "capacitance": 2.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S60",
+      "x": 1288.0,
+      "y": 186.0,
+      "pin_id": "S60_PIN",
+      "capacitance": 5.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S61",
+      "x": 280.0,
+      "y": 1823.0,
+      "pin_id": "S61_PIN",
+      "capacitance": 5.6,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
       "id": "S62",
-      "x": 943.0,
-      "y": 1954.0,
+      "x": 1201.0,
+      "y": 1850.0,
       "pin_id": "S62_PIN",
       "capacitance": 4.9,
       "required_arrival_time": 2.5,
@@ -573,224 +573,224 @@
     },
     {
       "id": "S63",
-      "x": 1841.0,
-      "y": 790.0,
+      "x": 979.0,
+      "y": 775.0,
       "pin_id": "S63_PIN",
-      "capacitance": 2.1,
+      "capacitance": 4.5,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S64",
-      "x": 773.0,
-      "y": 903.0,
+      "x": 481.0,
+      "y": 1912.0,
       "pin_id": "S64_PIN",
-      "capacitance": 3.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S65",
-      "x": 166.0,
-      "y": 932.0,
-      "pin_id": "S65_PIN",
       "capacitance": 4.6,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
+      "id": "S65",
+      "x": 1913.0,
+      "y": 1641.0,
+      "pin_id": "S65_PIN",
+      "capacitance": 3.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
       "id": "S66",
-      "x": 1201.0,
-      "y": 459.0,
+      "x": 1022.0,
+      "y": 1324.0,
       "pin_id": "S66_PIN",
-      "capacitance": 2.3,
+      "capacitance": 5.5,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S67",
-      "x": 608.0,
-      "y": 314.0,
+      "x": 1899.0,
+      "y": 275.0,
       "pin_id": "S67_PIN",
-      "capacitance": 2.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S68",
-      "x": 1718.0,
-      "y": 1402.0,
-      "pin_id": "S68_PIN",
-      "capacitance": 2.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S69",
-      "x": 926.0,
-      "y": 1359.0,
-      "pin_id": "S69_PIN",
-      "capacitance": 4.2,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S70",
-      "x": 771.0,
-      "y": 1809.0,
-      "pin_id": "S70_PIN",
-      "capacitance": 4.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S71",
-      "x": 1954.0,
-      "y": 1778.0,
-      "pin_id": "S71_PIN",
-      "capacitance": 3.9,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S72",
-      "x": 1215.0,
-      "y": 1241.0,
-      "pin_id": "S72_PIN",
-      "capacitance": 4.1,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S73",
-      "x": 1149.0,
-      "y": 532.0,
-      "pin_id": "S73_PIN",
       "capacitance": 3.4,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S74",
-      "x": 1811.0,
-      "y": 1554.0,
-      "pin_id": "S74_PIN",
-      "capacitance": 2.5,
+      "id": "S68",
+      "x": 857.0,
+      "y": 1730.0,
+      "pin_id": "S68_PIN",
+      "capacitance": 6.0,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S75",
-      "x": 1005.0,
-      "y": 1598.0,
-      "pin_id": "S75_PIN",
-      "capacitance": 5.1,
+      "id": "S69",
+      "x": 1312.0,
+      "y": 1833.0,
+      "pin_id": "S69_PIN",
+      "capacitance": 6.0,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S76",
-      "x": 420.0,
-      "y": 1581.0,
-      "pin_id": "S76_PIN",
-      "capacitance": 3.1,
+      "id": "S70",
+      "x": 1078.0,
+      "y": 1737.0,
+      "pin_id": "S70_PIN",
+      "capacitance": 4.0,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S77",
-      "x": 972.0,
-      "y": 1398.0,
-      "pin_id": "S77_PIN",
-      "capacitance": 5.8,
+      "id": "S71",
+      "x": 1292.0,
+      "y": 1375.0,
+      "pin_id": "S71_PIN",
+      "capacitance": 3.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S78",
-      "x": 198.0,
-      "y": 201.0,
-      "pin_id": "S78_PIN",
-      "capacitance": 5.2,
+      "id": "S72",
+      "x": 1942.0,
+      "y": 282.0,
+      "pin_id": "S72_PIN",
+      "capacitance": 4.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S79",
-      "x": 1054.0,
-      "y": 1669.0,
-      "pin_id": "S79_PIN",
-      "capacitance": 2.0,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S80",
-      "x": 1029.0,
-      "y": 1531.0,
-      "pin_id": "S80_PIN",
-      "capacitance": 4.3,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S81",
-      "x": 1655.0,
-      "y": 1180.0,
-      "pin_id": "S81_PIN",
-      "capacitance": 2.6,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S82",
-      "x": 1006.0,
-      "y": 609.0,
-      "pin_id": "S82_PIN",
-      "capacitance": 5.4,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S83",
-      "x": 914.0,
-      "y": 1547.0,
-      "pin_id": "S83_PIN",
+      "id": "S73",
+      "x": 1389.0,
+      "y": 1101.0,
+      "pin_id": "S73_PIN",
       "capacitance": 5.0,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
-      "id": "S84",
-      "x": 1501.0,
-      "y": 421.0,
-      "pin_id": "S84_PIN",
+      "id": "S74",
+      "x": 847.0,
+      "y": 224.0,
+      "pin_id": "S74_PIN",
+      "capacitance": 4.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S75",
+      "x": 1300.0,
+      "y": 921.0,
+      "pin_id": "S75_PIN",
+      "capacitance": 4.5,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S76",
+      "x": 161.0,
+      "y": 1060.0,
+      "pin_id": "S76_PIN",
+      "capacitance": 6.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S77",
+      "x": 1945.0,
+      "y": 1567.0,
+      "pin_id": "S77_PIN",
+      "capacitance": 2.9,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S78",
+      "x": 274.0,
+      "y": 1969.0,
+      "pin_id": "S78_PIN",
+      "capacitance": 4.7,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S79",
+      "x": 1438.0,
+      "y": 767.0,
+      "pin_id": "S79_PIN",
+      "capacitance": 2.8,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S80",
+      "x": 1147.0,
+      "y": 1453.0,
+      "pin_id": "S80_PIN",
       "capacitance": 4.1,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
+      "id": "S81",
+      "x": 173.0,
+      "y": 1733.0,
+      "pin_id": "S81_PIN",
+      "capacitance": 6.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S82",
+      "x": 397.0,
+      "y": 1920.0,
+      "pin_id": "S82_PIN",
+      "capacitance": 4.2,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S83",
+      "x": 907.0,
+      "y": 1596.0,
+      "pin_id": "S83_PIN",
+      "capacitance": 5.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
+      "id": "S84",
+      "x": 905.0,
+      "y": 776.0,
+      "pin_id": "S84_PIN",
+      "capacitance": 3.4,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
       "id": "S85",
-      "x": 1175.0,
-      "y": 1418.0,
+      "x": 373.0,
+      "y": 1526.0,
       "pin_id": "S85_PIN",
-      "capacitance": 3.8,
+      "capacitance": 3.5,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S86",
-      "x": 1213.0,
-      "y": 691.0,
+      "x": 273.0,
+      "y": 1496.0,
       "pin_id": "S86_PIN",
-      "capacitance": 5.3,
+      "capacitance": 2.4,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S87",
-      "x": 1984.0,
-      "y": 527.0,
+      "x": 1537.0,
+      "y": 842.0,
       "pin_id": "S87_PIN",
       "capacitance": 5.3,
       "required_arrival_time": 2.5,
@@ -798,118 +798,118 @@
     },
     {
       "id": "S88",
-      "x": 359.0,
-      "y": 1164.0,
+      "x": 904.0,
+      "y": 1664.0,
       "pin_id": "S88_PIN",
-      "capacitance": 3.7,
+      "capacitance": 2.4,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S89",
-      "x": 1262.0,
-      "y": 1165.0,
+      "x": 1049.0,
+      "y": 205.0,
       "pin_id": "S89_PIN",
-      "capacitance": 4.3,
+      "capacitance": 5.9,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S90",
-      "x": 1791.0,
-      "y": 413.0,
+      "x": 1936.0,
+      "y": 577.0,
       "pin_id": "S90_PIN",
-      "capacitance": 3.6,
+      "capacitance": 4.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S91",
-      "x": 262.0,
-      "y": 421.0,
+      "x": 1001.0,
+      "y": 1467.0,
       "pin_id": "S91_PIN",
-      "capacitance": 3.6,
+      "capacitance": 5.6,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S92",
-      "x": 143.0,
-      "y": 1843.0,
+      "x": 117.0,
+      "y": 1531.0,
       "pin_id": "S92_PIN",
-      "capacitance": 6.0,
+      "capacitance": 3.4,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S93",
-      "x": 943.0,
-      "y": 1058.0,
+      "x": 861.0,
+      "y": 606.0,
       "pin_id": "S93_PIN",
-      "capacitance": 4.2,
+      "capacitance": 4.1,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S94",
-      "x": 890.0,
-      "y": 303.0,
+      "x": 1764.0,
+      "y": 230.0,
       "pin_id": "S94_PIN",
-      "capacitance": 2.0,
+      "capacitance": 5.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S95",
-      "x": 475.0,
-      "y": 751.0,
+      "x": 307.0,
+      "y": 1893.0,
       "pin_id": "S95_PIN",
-      "capacitance": 2.1,
+      "capacitance": 5.1,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S96",
-      "x": 1026.0,
-      "y": 711.0,
+      "x": 1307.0,
+      "y": 511.0,
       "pin_id": "S96_PIN",
-      "capacitance": 3.5,
-      "required_arrival_time": 2.5,
-      "fixed": true
-    },
-    {
-      "id": "S97",
-      "x": 774.0,
-      "y": 1534.0,
-      "pin_id": "S97_PIN",
       "capacitance": 3.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
+      "id": "S97",
+      "x": 1655.0,
+      "y": 1246.0,
+      "pin_id": "S97_PIN",
+      "capacitance": 2.0,
+      "required_arrival_time": 2.5,
+      "fixed": true
+    },
+    {
       "id": "S98",
-      "x": 611.0,
-      "y": 915.0,
+      "x": 1740.0,
+      "y": 838.0,
       "pin_id": "S98_PIN",
-      "capacitance": 4.6,
+      "capacitance": 4.7,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S99",
-      "x": 151.0,
-      "y": 628.0,
+      "x": 1183.0,
+      "y": 252.0,
       "pin_id": "S99_PIN",
-      "capacitance": 3.8,
+      "capacitance": 2.8,
       "required_arrival_time": 2.5,
       "fixed": true
     },
     {
       "id": "S100",
-      "x": 850.0,
-      "y": 1081.0,
+      "x": 1818.0,
+      "y": 1745.0,
       "pin_id": "S100_PIN",
-      "capacitance": 3.1,
+      "capacitance": 4.5,
       "required_arrival_time": 2.5,
       "fixed": true
     }
