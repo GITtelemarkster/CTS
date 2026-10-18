@@ -119,9 +119,9 @@ if __name__ == "__main__":
     print("=" * 40)
     
     # Генерация профилей сложности согласно спецификации ТЗ
-    generator.generate_case("test_easy.json", num_sinks=15)       
-    generator.generate_case("test_medium.json", num_sinks=75)     
-    generator.generate_case("test_hard.json", num_sinks=350)       
+    generator.generate_case("test_easy.json", num_sinks=10)       
+    generator.generate_case("test_medium.json", num_sinks=100)     
+    generator.generate_case("test_hard.json", num_sinks=500)       
     generator.generate_case("test_stress.json", num_sinks=1000)    
     
     print("=" * 40)

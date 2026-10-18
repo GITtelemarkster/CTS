@@ -1,7 +1,7 @@
 import os
 import sys
 import time
-import argparse  # Добавлен модуль для обработки аргументов командной строки
+import argparse
 from parser import CTSParser
 from median_partition import MedianPartitionCTS
 from delay_calc import DelayCalculator
@@ -13,7 +13,6 @@ def print_divider():
     print("-" * 60)
 
 def main():
-    # Настройка парсера аргументов командной строки
     arg_parser = argparse.ArgumentParser(description="CTS Compiler Tool")
     arg_parser.add_argument("--input", type=str, default=os.path.join("data", "input.json"), 
                             help="Путь к входному JSON файлу конфигурации")
@@ -23,16 +22,12 @@ def main():
                             help="Префикс имени для выходных файлов (например, test_easy)")
     
     args = arg_parser.parse_args()
-
-    # Задаем пути на основе полученных аргументов
     input_file = args.input
     
-    # Формируем имена файлов с учетом префикса тест-кейса
     prefix = f"_{args.name}" if args.name else ""
     output_file = os.path.join(args.output_dir, f"output{prefix}.txt")
     image_file = os.path.join(args.output_dir, f"clock_tree{prefix}.png")
     
-    # Создаем целевую директорию для результатов, если её нет
     os.makedirs(args.output_dir, exist_ok=True)
     
     if not os.path.exists(input_file):
@@ -45,7 +40,7 @@ def main():
     
     start_time = time.time()
     
-    # 1. Шаг Парсинга
+    # 1. Шаг Парсинга (Использует встроенную Pydantic-валидацию)
     print("[1/6] Чтение и валидация конфигурации JSON...")
     parser = CTSParser(input_file)
     try:
@@ -54,56 +49,53 @@ def main():
         print(f"-> Доступно типов буферов: {len(buffers)}")
         print(f"-> Выбранная модель проводов: {wire_model.model.upper()}")
     except Exception as e:
-        print(f"[Критическая ошибка парсинга]: {e}")
+        print(f"[КРИТИЧЕСКАЯ ОШИБКА ВАЛИДАЦИИ JSON]: {e}")
+        # При нарушении входных требований компилятор немедленно прекращает работу, файлы не создаются
         sys.exit(1)
         
-       # 2. Шаг Синтеза дерева (Алгоритм медианного разбиения)
+    # 2. Шаг Синтеза дерева
     print("[2/6] Запуск рекурсивного медианного разбиения...")
-    # ИЗМЕНЕНО: Передаем wire_model четвертым аргументом
     cts_engine = MedianPartitionCTS(clock_source, sinks, buffers, wire_model, tree_params)
     root_node = cts_engine.build_tree()
-    print("-> Toпoлогия дерева успешно построена.")
+    print("-> Топология дерева успешно построена.")
 
-    
     # 3. Первичный расчет задержек
     print("[3/6] Расчет первоначальных задержек...")
     calculator = DelayCalculator(wire_model)
     initial_delays, initial_skew = calculator.calculate(root_node)
     print(f"-> Исходный разброс задержек (Initial Skew): {initial_skew:.4f} нс")
     
-    # 4. Постоптимизация (Выравнивание веток / Snaking)
+    # 4. Постоптимизация (Wire Snaking)
     print("[4/6] Оптимизация дерева (Wire Snaking)...")
     optimizer = CTSOptimizer(wire_model, opt_params)
     final_delays, final_skew = optimizer.optimize(root_node)
     print(f"-> Финальный разброс задержек (Final Skew): {final_skew:.4f} нс")
     
-    # 5. Верификация результатов (Валидатор)
+    # 5. Верификация результатов (Валидатор дерева)
     print("[5/6] Верификация физических и временных ограничений...")
     validator = CTSValidator(
         max_fanout=int(tree_params.get("max_fanout", 4)),
         max_depth=int(tree_params.get("max_depth", 10)),
         chip_width=parser.chip_width,
         chip_height=parser.chip_height,
+        grid_size=parser.grid_size,  # Передаем шаг сетки для контроля буферов
         available_buffers=buffers
     )
     is_valid, errors, warnings = validator.validate(root_node, len(sinks), final_delays)
     
     execution_time = time.time() - start_time
     
-    # Вывод результатов проверки в консоль
-    if is_valid:
-        print("-> [УСПЕХ] Дерево синхронизации успешно прошло все проверки!")
-    else:
-        print(f"-> [ОШИБКА] Обнаружено ошибок при верификации: {len(errors)}")
+    # ВНЕДРЕНО: Проверка строгого запрета на запись файлов при ошибках
+    if not is_valid:
+        print_divider()
+        print(f"-> [КРИТИЧЕСКАЯ ОШИБКА] Дерево синхронизации НАГЛЯДНО НАРУШИЛО ТРЕБОВАНИЯ ТЗ! ({len(errors)} ошибок)")
         for err in errors:
             print(f"   ! {err}")
-            
-    if warnings:
-        print(f"-> [ПРЕДУПРЕЖДЕНИЕ] Найдено замечаний: {len(warnings)}")
-        for warn in warnings:
-            print(f"   * {warn}")
-            
-    # 6. Отрисовка полученной топологии
+        print("\n[БЛОКИРОВКА] Запись отчетов и графиков отменена ради целостности данных проекта.")
+        print_divider()
+        sys.exit(1)  # Завершаем работу с кодом ошибки, не переходя к шагу 6
+
+    # 6. Отрисовка полученной топологии (Выполняется ТОЛЬКО если дерево валидно)
     print("[6/6] Генерация графического отчета...")
     try:
         visualizer = CTSVisualizer(parser.chip_width, parser.chip_height)
@@ -111,25 +103,28 @@ def main():
     except Exception as e:
         print(f"-> [Предупреждение] Не удалось построить график: {e}")
             
-    # Запись итогового текстового отчета в выходной файл
+    # Запись текстового отчета (Выполняется ТОЛЬКО если дерево валидно)
     print_divider()
     print(f"Сохранение результатов в отчет: {output_file}...")
     
     with open(output_file, "w", encoding="utf-8") as out:
         out.write("=== РЕЗУЛЬТАТЫ СИНТЕЗА ЦЕПЕЙ СИНХРОНИЗАЦИИ (CTS) ===\n")
-        out.write(f"Статус валидации: {'УСПЕШНО' if is_valid else 'ОШИБКА НАЙДЕНА'}\n")
+        out.write("Статус валидации: УСПЕШНО\n")
         out.write(f"Время работы алгоритма: {execution_time:.4f} сек.\n")
         out.write(f"Максимальная задержка: {max(final_delays.values()):.4f} нс\n")
         out.write(f"Минимальная задержка: {min(final_delays.values()):.4f} нс\n")
         out.write(f"Разброс задержек (Skew): {final_skew:.4f} нс\n")
         out.write(f"Целевой разброс (Skew Target): {opt_params.get('skew_target', 0.05)} нс\n")
         
+        if warnings:
+            out.write(f"\nЗамечания верификации ({len(warnings)}):\n")
+            for warn in warnings:
+                out.write(f" * {warn}\n")
+        
         out.write("\n--- ЗАДЕРЖКИ ДО ТЕРМИНАЛОВ (SINKS) ---\n")
         sorted_sinks = sorted(final_delays.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else x[0])
-        
         for s_id, delay in sorted_sinks:
             out.write(f"Терминал {s_id}: задержка = {delay:.4f} нс\n")
-
             
         out.write("\n--- ТОПОЛОГИЯ ДЕРЕВА (СПИСОК СОЕДИНЕНИЙ) ---\n")
         def dump_topology(node):

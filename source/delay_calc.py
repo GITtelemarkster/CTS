@@ -9,11 +9,13 @@ def get_manhattan_dist(n1: ClockNode, n2: ClockNode) -> float:
 class DelayCalculator:
     """
     Универсальный модуль расчета временных характеристик дерева синхронизации.
-    Поддерживает модели задержки Elmore и Linear.
+    Поддерживает модели задержки Elmore и Linear с обязательным учетом масштаба unit_length.
     """
     def __init__(self, wire_model: WireModel):
         self.wire_model = wire_model
         self.model_type = wire_model.model.lower()
+        # Извлекаем масштаб перевода координат в физические единицы длины (по умолчанию 1.0)
+        self.scale = float(getattr(wire_model, 'unit_length', 1.0))
 
     def calculate(self, root: ClockNode) -> Tuple[Dict[str, float], float]:
         """
@@ -42,7 +44,7 @@ class DelayCalculator:
     def _update_capacitance_bottom_up(self, node: ClockNode) -> float:
         """
         Первый проход: вычисляет электрическую нагрузку, которую видит каждый узел.
-        Буферы изолируют емкость поддерева, подставляя свою входную емкость.
+        Включает масштабирование длины проводов через unit_length.
         """
         if node.node_type == "sink" and node.sink_ref:
             node.downstream_capacitance = node.sink_ref.capacitance
@@ -51,17 +53,19 @@ class DelayCalculator:
         if node.node_type == "buffer" and node.buffer_ref:
             # Предыдущий уровень видит только входную емкость этого буфера
             node.downstream_capacitance = node.buffer_ref.input_capacitance
-            # Но для внутреннего расчета поддерева этого буфера нам все равно нужно собрать емкости его детей
+            # Сбор емкостей детей с учетом физического масштаба
             self._update_buffer_subtree_capacitance(node)
             return node.downstream_capacitance
 
         # Для точек ветвления (branch) и корня (source) собираем емкости детей и проводов
         total_cap = 0.0
         for child in node.children:
-            wire_len = get_manhattan_dist(node, child)
-            child.wire_length_to_parent = wire_len
+            # ИЗМЕНЕНО: Вычисляем абстрактную длину и сразу масштабируем её через unit_length
+            raw_dist = get_manhattan_dist(node, child)
+            child.wire_length_to_parent = raw_dist * self.scale
             
-            wire_cap = wire_len * self.wire_model.unit_capacitance
+            # Емкость провода рассчитывается от отмасштабированной длины
+            wire_cap = child.wire_length_to_parent * self.wire_model.unit_capacitance
             child_cap = self._update_capacitance_bottom_up(child)
             
             total_cap += wire_cap + child_cap
@@ -70,17 +74,17 @@ class DelayCalculator:
         return total_cap
 
     def _update_buffer_subtree_capacitance(self, buffer_node: ClockNode):
-        """Вспомогательный метод для сбора емкостей внутри поддерева буфера"""
+        """Вспомогательный метод для сбора емкостей внутри поддерева буфера с учетом масштаба"""
         total_cap = 0.0
         for child in buffer_node.children:
-            wire_len = get_manhattan_dist(buffer_node, child)
-            child.wire_length_to_parent = wire_len
+            # ИЗМЕНЕНО: Применяем unit_length при расчете длины сегмента
+            raw_dist = get_manhattan_dist(buffer_node, child)
+            child.wire_length_to_parent = raw_dist * self.scale
             
-            wire_cap = wire_len * self.wire_model.unit_capacitance
+            wire_cap = child.wire_length_to_parent * self.wire_model.unit_capacitance
             child_cap = self._update_capacitance_bottom_up(child)
             total_cap += wire_cap + child_cap
-        # Сохраняем реальную нагрузку на выходе буфера в отдельное внутреннее свойство,
-        # чтобы использовать при расчете задержки драйвера
+            
         buffer_node.buffer_output_load = total_cap
 
     def _compute_delay_top_down(self, node: ClockNode, sink_delays: Dict[str, float]):
@@ -96,31 +100,29 @@ class DelayCalculator:
                 intrinsic_delay = node.buffer_ref.intrinsic_delay
                 r_driver = node.buffer_ref.output_resistance
             
-            # 2. Параметры линии связи до потомка
+            # 2. Физические параметры линии связи (длина l_wire уже отмасштабирована на Шаге 1)
             l_wire = child.wire_length_to_parent
             r_wire = l_wire * self.wire_model.unit_resistance
             c_wire = l_wire * self.wire_model.unit_capacitance
             
             # Нагрузка на конце провода
             c_load = child.downstream_capacitance 
-            # Если родитель — буфер, драйвер нагружен на все свои ветки суммарно
             total_driver_load = node.buffer_output_load if node.node_type == "buffer" else node.downstream_capacitance
 
-            # 3. Расчет задержки сегмента в зависимости от выбранной модели
+            # 3. Расчет задержки сегмента с учетом физического размера
             if self.model_type == "elmore":
-                # Модель Элмора: учитывает сопротивление драйвера и распределенное RC провода
+                # Модель Элмора: r_wire и c_wire базируются на верном масштабе
                 segment_delay = (
                     intrinsic_delay + 
                     r_driver * total_driver_load + 
                     r_wire * (0.5 * c_wire + c_load)
                 )
             else:
-                # Линейная модель: задержка пропорциональна длине провода и емкости нагрузки
-                # Используется упрощенный коэффициент задержки
+                # Линейная модель: задержка пропорциональна отмасштабированной длине провода
                 segment_delay = (
                     intrinsic_delay + 
                     r_driver * total_driver_load + 
-                    l_wire * 0.1  # Базовый коэффициент задержки на единицу длины
+                    l_wire * 0.1  # Базовый коэффициент задержки на единицу физической длины
                 )
             
             child.delay_from_source = node.delay_from_source + segment_delay
